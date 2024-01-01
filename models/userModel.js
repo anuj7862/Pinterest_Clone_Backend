@@ -6,7 +6,6 @@ const userSchema = mongoose.Schema({
     username: {
       type: String,
       required: true,
-      unique: true,
     },
     emailId: {
       type: String,
@@ -22,7 +21,7 @@ const userSchema = mongoose.Schema({
     },
     pins: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'pins',
+      ref: 'pin',
     }],
     boards: [{
         type: mongoose.Schema.Types.ObjectId,

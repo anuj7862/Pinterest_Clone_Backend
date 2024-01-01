@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 
 const localStrategy = require("passport-local");
+const userModel = require('../models/userModel');
 
 
 const User = require('../models/userModel');
@@ -17,11 +18,11 @@ router.post('/signup', async (req, res) => {
     User.register(newUser, password)
     .then((registerUser) => {
         passport.authenticate("local")(req, res, () =>{
-            res.status(201).json({ message: 'User registered successfully' });
+            res.status(200).json({ message: 'User registered successfully', user: registerUser });
           });
     })
     .catch((err) => {
-        res.status(500).json({ message: err });
+        res.status(500).json({ error: err });
     })
 });
 
@@ -31,13 +32,16 @@ router.post('/login', (req, res, next) => {
         return res.status(500).json({ error: err.message });
       }
       if (!user) {
-        return res.status(401).json({ message: 'Invalid email id or password' });
+        return res.status(401).json({ error: 'Invalid email id or password' });
       }
-      req.logIn(user, (err) => {
+      req.logIn(user, async (err) => {
         if (err) {
           return res.status(500).json({ error: err.message });
         }
-        return res.status(200).json({ message: 'Login successful', user: req.user });
+        const userData = await userModel.findOne({emailId : user.emailId})
+                                    .populate('pins');
+                                    //.populate('boards');
+        return res.status(200).json({ message: 'Login successful', user: userData });
       });
     })(req, res, next);
   });

@@ -3,7 +3,7 @@ const { USERNAME, PASSWORD } = require('./config');
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(`mongodb+srv://${USERNAME}:${PASSWORD}@cluster1.vqkbc8y.mongodb.net/pinterestDBretryWrites=true&w=majority`)
+    await mongoose.connect(`mongodb+srv://${USERNAME}:${PASSWORD}@cluster1.vqkbc8y.mongodb.net/pinterestDB?retryWrites=true&w=majority`)
     .then( () =>
             {console.log("Connected to database")
     }).catch (() => {
