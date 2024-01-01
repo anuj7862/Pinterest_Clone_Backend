@@ -4,8 +4,13 @@ const session = require('express-session');
 const cors = require('cors');
 
 const connectDB = require('./dbConnect');
+
 const authRoutes = require('./routes/authRoutes');
 const pinRoutes = require('./routes/pinRoutes');
+const boardRoutes = require('./routes/boardRoutes');
+const tagTopicRoutes = require('./routes/tagTopicRoutes');
+const exploreCardRoutes = require('./routes/exploreCardRoutes');
+
 const User = require('./models/userModel');
 const { PORT } = require('./config');
 
@@ -34,6 +39,9 @@ passport.deserializeUser(User.deserializeUser());
 //routes for auth
 app.use('/auth', authRoutes);
 app.use('/pin', pinRoutes);
+app.use('/board',boardRoutes);
+app.use('/topic',tagTopicRoutes);
+app.use('/exploreCard', exploreCardRoutes);
 
 app.get('/', (req, res) => {
     res.send("Server is up");

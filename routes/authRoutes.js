@@ -39,8 +39,13 @@ router.post('/login', (req, res, next) => {
           return res.status(500).json({ error: err.message });
         }
         const userData = await userModel.findOne({emailId : user.emailId})
-                                    .populate('pins');
-                                    //.populate('boards');
+                                    .populate('pins')
+                                    .populate({ 
+                                            path: 'boards', 
+                                            populate : {
+                                                path: 'pins'
+                                            }
+                                        });
         return res.status(200).json({ message: 'Login successful', user: userData });
       });
     })(req, res, next);
@@ -54,5 +59,22 @@ router.post('/login', (req, res, next) => {
         res.status(200).json({message: 'Logout successful'});
     })
   });
+
+  router.get('/userDetails', async (req, res) => {
+    const userData = await userModel.findById(req.query.userId)
+                                .populate('pins')
+                                .populate({ 
+                                        path: 'boards', 
+                                        populate : {
+                                            path: 'pins'
+                                        }
+                                    });
+    if(userData){
+        res.status(200).json({message: 'user found', user: userData});
+    }
+    else{
+        res.status(500).json({error : 'user not found'});
+    }
+  })
 
   module.exports = router;

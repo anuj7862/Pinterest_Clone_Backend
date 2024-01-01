@@ -25,7 +25,7 @@ const userSchema = mongoose.Schema({
     }],
     boards: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'boards',
+        ref: 'board',
     }],
     dob: {
       type: Date,

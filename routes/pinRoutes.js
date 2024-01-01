@@ -1,4 +1,5 @@
 const express = require('express');
+const boardModel = require('../models/boardModel');
 const Pin = require('../models/pinModel');
 const userModel = require('../models/userModel');
 
@@ -28,13 +29,24 @@ router.post('/createPin', async (req, res) => {
       allowComments,
       showSimilar,
     });
-
+    
     const user = await userModel.findOne({_id : createdBy});
-    const savedPin = await newPin.save();
-    user.pins.push(savedPin._id);
-
-    user.save();
-    res.status(201).json(savedPin);
+    if(user)
+    {
+        const savedPin = await newPin.save();
+        user.pins.push(savedPin._id);
+        user.save();
+        //if board is there
+        if(board){
+            const boardId = await boardModel.findById(board);
+            boardId.pins.push(savedPin._id);
+            boardId.save();
+        }
+        res.status(201).json(savedPin);
+    }
+    else{
+      res.status(500).json({error: "Invalid User"});
+    }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -78,7 +90,7 @@ router.delete('/deletePin/', async (req, res) => {
       return res.status(403).json({ message: 'Permission denied' });
     }
 
-    await pin.remove();
+    await Pin.deleteOne({_id : pinId});
     res.json({ message: 'Pin deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });
