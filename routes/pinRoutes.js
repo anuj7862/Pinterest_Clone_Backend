@@ -1,4 +1,5 @@
 const express = require('express');
+const { PERPAGE } = require('../config');
 const boardModel = require('../models/boardModel');
 const Pin = require('../models/pinModel');
 const userModel = require('../models/userModel');
@@ -48,18 +49,23 @@ router.post('/createPin', async (req, res) => {
       res.status(500).json({error: "Invalid User"});
     }
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error });
   }
 });
 
 // Get all pins
 router.get('/getAllPins', async (req, res) => {
   try {
-    const pins = await Pin.find();
+    const page = req.query.page;
+    const skipPins = (page - 1)*PERPAGE;
+
+    const pins = await Pin.find()
+                            .skip(skipPins)
+                            .limit(PERPAGE);
     const response = {pins: pins};
     res.json(response);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error });
   }
 });
 
@@ -70,7 +76,7 @@ router.get('/getAllPinsByUserId/', async (req, res) => {
     const pins = await Pin.find({ createdBy: userId });
     res.json(pins);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error });
   }
 });
 
@@ -93,7 +99,7 @@ router.delete('/deletePin/', async (req, res) => {
     await Pin.deleteOne({_id : pinId});
     res.json({ message: 'Pin deleted successfully' });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error });
   }
 });
 

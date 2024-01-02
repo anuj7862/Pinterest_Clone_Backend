@@ -17,7 +17,7 @@ router.post('/createExploreCard', async (req, res) => {
         res.status(200).json({message: 'card created', explorecard: savedCard})
     }
     catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error });
     }
 });
 
@@ -35,6 +35,7 @@ router.get('/getExploreCards', async (req, res) => {
                 _id: '$date', // Group by the date field
                 cards: {
                   $push: {
+                    _id : '$_id',
                     title: '$title',
                     image: '$image',
                     description: '$description',
@@ -47,7 +48,7 @@ router.get('/getExploreCards', async (req, res) => {
         res.status(200).json({message : `explore cards for date ${date}`, dateWiseCards : result});
     }
     catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error });
     }
 })
 

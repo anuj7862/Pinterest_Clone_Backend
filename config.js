@@ -2,5 +2,5 @@
 const USERNAME =  "";
 const PASSWORD = "";
 const PORT = 3000;
-
-module.exports = {USERNAME, PASSWORD, PORT};
+const PERPAGE = 6;
+module.exports = {USERNAME, PASSWORD, PORT, PERPAGE};

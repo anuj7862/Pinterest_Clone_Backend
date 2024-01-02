@@ -12,7 +12,7 @@ const pinSchema = new mongoose.Schema({
     ref: 'board',
   },
   tags: {
-    type: [String],
+    type: [Object],
     default: [],
   },
   createdBy: {

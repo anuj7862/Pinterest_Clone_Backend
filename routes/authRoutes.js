@@ -12,7 +12,7 @@ passport.use(new localStrategy(User.authenticate()));
 
 
 router.post('/signup', async (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
     const { emailId, password, dob, username, name } = req.body;
     const newUser = new User({ emailId , dob, username, name });
     User.register(newUser, password)

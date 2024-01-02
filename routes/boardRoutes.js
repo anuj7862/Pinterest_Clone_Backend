@@ -26,13 +26,13 @@ router.post('/createBoard', async (req, res) => {
         const savedBoard = await newBoard.save();
         user.boards.push(savedBoard._id);
         user.save();
-        res.status(201).json(savedBoard);
+        res.status(201).json( {message: 'board Created', board : savedBoard});
       }
       else{
         res.status(500).json({error: "Invalid User"});
       }
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error });
     }
   });
   
@@ -43,7 +43,7 @@ router.post('/createBoard', async (req, res) => {
       const response = {boards: boards};
       res.json(response);
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error });
     }
   });
   
@@ -52,9 +52,9 @@ router.post('/createBoard', async (req, res) => {
     try {
       const userId = req.query.userId;
       const boards = await Board.find({ createdBy: userId });
-      res.json(boards);
+      res.status(200).json({boards : boards});
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error });
     }
   });
   
@@ -77,7 +77,7 @@ router.post('/createBoard', async (req, res) => {
       await Board.deleteOne({_id: boardId});
       res.json({ message: 'Board deleted successfully' });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error });
     }
   });
   
