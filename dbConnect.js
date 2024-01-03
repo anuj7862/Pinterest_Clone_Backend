@@ -1,9 +1,10 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
-const { USERNAME, PASSWORD } = require('./config');
+//const { USERNAME, PASSWORD } = require('./config');
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(`mongodb+srv://${USERNAME}:${PASSWORD}@cluster1.vqkbc8y.mongodb.net/pinterestDB?retryWrites=true&w=majority`)
+    await mongoose.connect(`mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@cluster1.vqkbc8y.mongodb.net/pinterestDB?retryWrites=true&w=majority`)
     .then( () =>
             {console.log("Connected to database")
     }).catch (() => {

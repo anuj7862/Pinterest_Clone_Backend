@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const passport = require('passport');
 const session = require('express-session');
@@ -12,7 +13,7 @@ const tagTopicRoutes = require('./routes/tagTopicRoutes');
 const exploreCardRoutes = require('./routes/exploreCardRoutes');
 
 const User = require('./models/userModel');
-const { PORT } = require('./config');
+const PORT = process.env.PORT;
 
 const app = express();
 connectDB(); //db connection
@@ -48,6 +49,6 @@ app.get('/', (req, res) => {
 })
 
 
-app.listen(PORT, () => {
+app.listen( PORT, () => {
     console.log(`server is running on port : ${PORT}`);
 });
