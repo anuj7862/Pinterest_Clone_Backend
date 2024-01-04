@@ -4,7 +4,7 @@ const Pin = require('../models/pinModel');
 const userModel = require('../models/userModel');
 
 const router = express.Router();
-const PERPAGE = 6;
+const PERPAGE = 10;
 // Create a new pin
 router.post('/createPin', async (req, res) => {
   try {
